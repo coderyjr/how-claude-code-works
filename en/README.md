@@ -207,6 +207,16 @@ Planned topics:
 
 | Date | Changes |
 |------|---------|
+| 2026-07-07 | Added Chapter 19: Dynamic Workflows (trigger word ultracode) — orchestrating tens to hundreds of subagents with a deterministic JS script; the no-barrier pipeline design, the three caps (concurrency/agent/budget), worktree isolation and resume-from-checkpoint, with excerpts of the Workflow tool description |
+| 2026-07-06 | Added Chapter 18: Auto Mode — permissions move from "rules + confirmation dialogs" into the ML-classifier era, with the classifier's full system prompt, four natural-language rule buckets, two-stage classification, and the semantics of a spoken "don't push" boundary |
+| 2026-07-06 | Added Chapter 17: Autonomy & Continuation (/goal and /loop) — with the verbatim prompts of the /goal evaluator and the /loop command, plus a reproducible reverse-engineering method |
+| 2026-07-06 | Rewrote Chapter 16 (Observability) as clear technical prose; ran an adversarial fact-check of the whole book against the v2.1.88 source snapshot and fixed errors; standardized defense-in-depth to 7 layers |
+| 2026-07-04 | Added Chapter 16: Observability (Metrics & Trace, addressing #10), opening the "post-snapshot new features" module — black-box reverse engineering plus open-source intelligence on capabilities that postdate the leak (goal/loop, Auto Mode, Dynamic Workflows, etc.) |
+| 2026-07-03 | Added a roadmap / TODO: a plan for analyzing features that postdate the (~v2.1.6x) snapshot |
+| 2026-07-02 | Refined the project's positioning and added a disclaimer (educational architecture analysis, unofficial, no source redistribution) |
+| 2026-05-05 | Refined the tool system documentation |
+| 2026-04-21 | Reorganized the docs structure, updated the favicon, added a contributor |
+| 2026-04-10 | Fixed an overly wide Mermaid diagram, switching to a vertical layout to avoid cramped text |
 | 2026-04-09 | Comprehensive review and fix of all 13 chapters: corrected inaccurate numbers/references (line counts, percentages, event counts, chapter numbering), added high-level overviews to chapters that lacked them, restructured sections for better readability (ch05 split/swap, ch08 reorder/merge), synchronized Chinese and English versions |
 | 2026-04-03 | Added Chapter 14: System Prompt Design Philosophy, in-depth analysis of prompt content design principles and engineering practices |
 | 2026-04-03 | Added dark mode, reading progress bar, back-to-top button, context-aware language switching, and other UI improvements |
