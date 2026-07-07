@@ -83,7 +83,7 @@ const results = await pipeline(
 
 隔离靠 worktree。给 `agent()` 传 `isolation: 'worktree'`，运行时就给这个 agent 开一个独立的 git worktree，让它在自己那份副本里改，跑完没改动就自动删、有改动就把路径交回来。这正是第 8 章讲的 worktree 隔离底座（见 8.2），Workflow 直接拿来用。描述里也提醒它贵——每个 agent 多花几百毫秒加一份磁盘，所以只在"并行写、会互相冲突"时才开。
 
-断点续跑靠 journal 和 runId。每次 run 有个 id（形如 `wf_000d0acb-383`），脚本每个 `agent()` 都往 journal 里记两条——一条 `started`、一条 `result`——都带一个 `v2:<哈希>` 的 key，那个 key 就是这次调用（prompt 加 opts）的内容哈希。带 `resumeFromRunId` 重跑时，最长的那一段"key 没变"的 `agent()` 前缀直接命中 journal 里上次存的 result，从第一个哈希变了的调用起才真重跑。（这是从一次真跑 workflow 留下的 `journal.jsonl` 里看到的，它在 `<会话>/subagents/workflows/wf_<runId>/` 下，每个子 agent 的完整对话另存一份 `agent-<id>.jsonl`。）二进制里能读到这套机制的骨架：运行时按 `workflowRunId` 注册和管理这个 `local_workflow` 任务，缓存命中则由同一 runId 的 journal 提供（相关事件 `tengu_workflow_journal_started_hit_respawn`、`tengu_workflow_saved`）。所以一个 100 个 agent 的迁移跑到第 60 个断了，接着跑不会重做前 59 个。这也解释了 19.2 为什么禁 `Date.now()`/`Math.random()`——脚本必须可重放，缓存命中才对得上。
+断点续跑靠 journal 和 runId。每次 run 有个 id（形如 `wf_000d0acb-383`），脚本每个 `agent()` 都往 journal 里记两条——一条 `started`、一条 `result`——都带一个 `v2:<哈希>` 的 key，那个 key 就是这次调用（prompt 加 opts）的内容哈希。带 `resumeFromRunId` 重跑时，最长的那一段"key 没变"的 `agent()` 前缀直接命中 journal 里上次存的 result，从第一个哈希变了的调用起才真重跑。（这些都是从一次真跑 workflow 的落盘里看到的：模型现写的那段脚本本身会被存成一个可编辑的 `.js` 文件，run 目录 `<会话>/subagents/workflows/wf_<runId>/` 下有 `journal.jsonl`，每个子 agent 的完整对话再另存一份 `agent-<id>.jsonl`。）二进制里能读到这套机制的骨架：运行时按 `workflowRunId` 注册和管理这个 `local_workflow` 任务，缓存命中则由同一 runId 的 journal 提供（相关事件 `tengu_workflow_journal_started_hit_respawn`、`tengu_workflow_saved`）。所以一个 100 个 agent 的迁移跑到第 60 个断了，接着跑不会重做前 59 个。这也解释了 19.2 为什么禁 `Date.now()`/`Math.random()`——脚本必须可重放，缓存命中才对得上。
 
 ## 19.7 把可靠性编排进流程
 
